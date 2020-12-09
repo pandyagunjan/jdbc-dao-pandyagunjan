@@ -1,8 +1,6 @@
-import daos.ConnectionFactory;
-import models.DAOCar;
+import daos.DAOCar;
 import models.DTOCar;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 

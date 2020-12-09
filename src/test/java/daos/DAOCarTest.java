@@ -1,5 +1,4 @@
 package daos;
-import models.DAOCar;
 import models.DTOCar;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,4 +34,29 @@ public class DAOCarTest {
 
         Assert.assertEquals(actual, expected);
     }
+
+    @Test
+    public void createTest(){
+        String actual = "VIN ON CREATION";
+        dto = new DTOCar(99,"FAKE MAKE" , "FAKE MODEL ", "FAKE YEAR" , "FAKE COLOR" , actual);
+        dao.create(dto);
+        String expected = dao.findById(99).getVIN();
+
+        Assert.assertEquals(expected, actual);
+        dao.delete(99);
+    }
+
+    @Test
+    public void deleteTest(){
+        dto = new DTOCar(100,"FAKE MAKE" , "FAKE MODEL ", "FAKE YEAR" , "FAKE COLOR" , "FAKE VIN");
+        dao.create(dto);
+        int id = 100;
+        Assert.assertNotNull(dao.findById(id));
+
+        dao.delete(id);
+        Assert.assertNull(dao.findById(id));
+    }
+
+
+
 }

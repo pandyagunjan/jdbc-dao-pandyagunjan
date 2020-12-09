@@ -1,7 +1,5 @@
 package models;
 
-import daos.DTOInterface;
-
 public class DTOCar implements DTOInterface {
 
 
@@ -11,6 +9,19 @@ public class DTOCar implements DTOInterface {
     String Year;
     String Color;
     String VIN;
+
+    public DTOCar() {
+    }
+
+    public DTOCar(Integer Id, String Make, String Model, String Year, String Color, String VIN) {
+        this.Id=Id;
+        this.Make=Make;
+        this.Model=Model;
+        this.Year=Year;
+        this.Color=Color;
+        this.VIN=VIN;
+    }
+
     public Integer getId() {
         return Id;
     }

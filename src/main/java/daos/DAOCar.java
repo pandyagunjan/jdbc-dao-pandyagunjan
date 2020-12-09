@@ -1,14 +1,12 @@
-package models;
+package daos;
 
-import daos.ConnectionFactory;
-import daos.DAO;
 import models.DTOCar;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DAOCar implements DAO {
+public class DAOCar implements DAOInterface {
     Connection connection = ConnectionFactory.getConnection();
 
     public DTOCar findById(int id) {
@@ -75,11 +73,41 @@ public class DAOCar implements DAO {
         return false;
     }
 
-    public DTOCar create(DTOCar dto) {
-        return null;
+    public boolean create(DTOCar dto) {
+        Connection connection = ConnectionFactory.getConnection();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Car VALUES (?,?,?,?,?,?)");
+            preparedStatement.setInt(1, dto.getId());
+            preparedStatement.setString(2, dto.getMake());
+            preparedStatement.setString(3, dto.getModel());
+            preparedStatement.setString(4, dto.getYear());
+            preparedStatement.setString(5, dto.getColor());
+            preparedStatement.setString(6, dto.getVIN());
+            int i  = preparedStatement.executeUpdate();
+            if (i == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public void delete(int id) {
+
+
+    public boolean delete(int id) {
+        try{
+            Statement statement = connection.createStatement();
+            int i = statement.executeUpdate("DELETE FROM Car WHERE Id = " + id);
+
+            if (i == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
 
     }
 }
