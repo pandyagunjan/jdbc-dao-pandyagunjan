@@ -4,10 +4,7 @@ import daos.ConnectionFactory;
 import daos.DAO;
 import models.DTOCar;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,18 +44,35 @@ public class DAOCar implements DAO {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CAR");
             List<DTOCar> cars = new ArrayList<DTOCar>();
-            if (resultSet.next()){
+            while(resultSet.next()){
                 DTOCar car = extractCarFromResultSet(resultSet);
                 cars.add(car);
             }
+            return cars;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public DTOCar update(DTOCar dto) {
-        return null;
+    public boolean update(DTOCar dto) {
+
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE car SET Make=?, Model=?, Year=? , Color=? , Vin=?  WHERE Id=?");
+            preparedStatement.setInt(6, dto.getId());
+            preparedStatement.setString(1, dto.getMake());
+            preparedStatement.setString(2, dto.getModel());
+            preparedStatement.setString(3, dto.getYear());
+            preparedStatement.setString(4, dto.getColor());
+            preparedStatement.setString(5, dto.getVIN());
+            int i = preparedStatement.executeUpdate();
+            if (i == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public DTOCar create(DTOCar dto) {

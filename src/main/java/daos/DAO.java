@@ -8,7 +8,7 @@ public interface DAO {
 
     public DTOCar findById(int id);
     public List findAll();
-    public DTOCar update(DTOCar dto);
+    public boolean update(DTOCar dto);
     public DTOCar create(DTOCar dto);
     public void delete(int id);
 
