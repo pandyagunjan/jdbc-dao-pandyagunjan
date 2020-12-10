@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAOCar implements DAOInterface {
-    Connection connection = ConnectionFactory.getConnection();
+    ConnectionFactory connection = ConnectionFactory.getInstance();
 
     public DTOCar findById(int id) {
         try{
-            Statement statement = connection.createStatement();
+            Statement statement = connection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CAR WHERE Id="+id);
             if (resultSet.next()){
                 return extractCarFromResultSet(resultSet);
@@ -39,7 +39,7 @@ public class DAOCar implements DAOInterface {
 
     public List findAll() {
         try{
-            Statement statement = connection.createStatement();
+            Statement statement = connection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM CAR");
             List<DTOCar> cars = new ArrayList<DTOCar>();
             while(resultSet.next()){
@@ -56,7 +56,7 @@ public class DAOCar implements DAOInterface {
     public boolean update(DTOCar dto) {
 
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE car SET Make=?, Model=?, Year=? , Color=? , Vin=?  WHERE Id=?");
+            PreparedStatement preparedStatement = connection.getConnection().prepareStatement("UPDATE car SET Make=?, Model=?, Year=? , Color=? , Vin=?  WHERE Id=?");
             preparedStatement.setInt(6, dto.getId());
             preparedStatement.setString(1, dto.getMake());
             preparedStatement.setString(2, dto.getModel());
@@ -74,9 +74,9 @@ public class DAOCar implements DAOInterface {
     }
 
     public boolean create(DTOCar dto) {
-        Connection connection = ConnectionFactory.getConnection();
+       // Connection connection = ConnectionFactory.getConnection();
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Car VALUES (?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = connection.getConnection().prepareStatement("INSERT INTO Car VALUES (?,?,?,?,?,?)");
             preparedStatement.setInt(1, dto.getId());
             preparedStatement.setString(2, dto.getMake());
             preparedStatement.setString(3, dto.getModel());
@@ -97,7 +97,7 @@ public class DAOCar implements DAOInterface {
 
     public boolean delete(int id) {
         try{
-            Statement statement = connection.createStatement();
+            Statement statement = connection.getConnection().createStatement();
             int i = statement.executeUpdate("DELETE FROM Car WHERE Id = " + id);
 
             if (i == 1){
